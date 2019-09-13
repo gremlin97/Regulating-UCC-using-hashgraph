@@ -8,6 +8,7 @@ use rocket_contrib::json::{Json};
 use shamir::SecretData;
 use rocket::response::status;
 use std;
+use serde_json;
 
 #[derive(Serialize, Deserialize, Debug, Clone, FromForm)]
 pub struct SplitSet {
@@ -33,9 +34,17 @@ pub fn initiate_call(split_set : Json<SplitSet>) -> String {
     let retrieved_user_number = SecretData::recover_secret(3, vec![key_share_oap, key_share_ir,key_share_rtm])
                                             .unwrap_or("Wrong Key used!..".to_string());
 
-    println!("retrieved user number: {}", retrieved_user_number);
+    println!("retrieved user number at OAP..: {}", retrieved_user_number);
     assert_eq!(retrieved_user_number, "9034218120");
+    let split_set = crate::client_call::SplitSet{
+        share_rtm: split_set.share_rtm.to_string(),
+        share_oap: split_set.share_oap.to_string(),
+        share_ir: split_set.share_ir.to_string(),
+        share_tap: split_set.share_tap.to_string()
+    };
     if retrieved_user_number == "9034218120" {
+        println!("Initiating call from OAP to TAP");
+        crate::client_call::post_request(&split_set, "TAP".to_string());
         "Accepted".to_string()
     } else {
         "Not Accepted".to_string()
@@ -57,7 +66,7 @@ pub fn terminate_call(split_set : Json<SplitSet>) -> String {
     let retrieved_user_number = SecretData::recover_secret(3, vec![key_share_tap, key_share_ir,key_share_rtm])
         .unwrap_or("Wrong Key used!..".to_string());
 
-    println!("number: {}", retrieved_user_number);
+    println!("retrieved user number at TAP..: {}", retrieved_user_number);
     assert_eq!(retrieved_user_number, "9034218120");
     if retrieved_user_number == "9034218120" {
         "Accepted".to_string()

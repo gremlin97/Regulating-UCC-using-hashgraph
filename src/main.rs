@@ -26,6 +26,8 @@ extern crate base64;
 mod smt_number;
 mod vid_generation;
 mod tsp1;
+mod client_call;
+
 
 
 
