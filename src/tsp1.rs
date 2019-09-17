@@ -6,9 +6,6 @@
 
 use rocket_contrib::json::{Json};
 use shamir::SecretData;
-use rocket::response::status;
-use std;
-use serde_json;
 
 #[derive(Serialize, Deserialize, Debug, Clone, FromForm)]
 pub struct SplitSet {
@@ -52,7 +49,7 @@ pub fn initiate_call(split_set : Json<SplitSet>) -> String {
 }
 
 #[post("/tap", format = "application/json", data = "<split_set>")]
-pub fn terminate_call(split_set : Json<SplitSet>) -> String {
+pub fn terminate_call(split_set : Json<SplitSet>){
 //    println!("Received from OAP, split_set: {:?}.", split_set);
 
     ///decrypt share_oap
@@ -68,11 +65,7 @@ pub fn terminate_call(split_set : Json<SplitSet>) -> String {
 
     println!("retrieved user number at TAP..: {}", retrieved_user_number);
     assert_eq!(retrieved_user_number, "9034218120");
-    if retrieved_user_number == "9034218120" {
-        "Accepted".to_string()
-    } else {
-        "Not Accepted".to_string()
-    }
+
 }
 
 

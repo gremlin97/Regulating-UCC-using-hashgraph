@@ -26,19 +26,20 @@ fn get_request(uri : String) -> String {
 }
 
 pub fn post_request(split_set: &SplitSet, dest : String ) -> bool {
-    let client = reqwest::Client::new();
     let res = json!( {
             "share_ir": split_set.share_ir,
             "share_oap": split_set.share_oap,
             "share_rtm": split_set.share_rtm,
             "share_tap": split_set.share_tap
     });
+
     let uri;
     if dest == "OAP" {
         uri = "http://localhost:8000/oap"
     } else {
         uri = "http://localhost:8000/tap"
     }
+    let client = reqwest::Client::new();
     let mut response = client.post(uri)
         .json(&res)
         .send()

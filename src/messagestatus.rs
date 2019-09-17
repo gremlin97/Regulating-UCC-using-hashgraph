@@ -23,6 +23,8 @@ pub struct MessageBlock {
 //    }
 //}
 
+/// User pref are stored in a sparse-merkle tree
+/// initiate a db connection 
 #[post("/user", format = "application/json", data = "<message_block>")]
 pub fn check_user_pref(message_block : Json<MessageBlock>) -> String {
     println!("user {:?}", message_block);
