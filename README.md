@@ -27,6 +27,7 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 3. Other tools: Docker, Postman, Nginx
 
 # Design diagram
+![alt text](https://user-images.githubusercontent.com/23367724/65387692-5b05fd80-dd67-11e9-8963-c0103260ad9f.png)
 
 
 # filtering-service
