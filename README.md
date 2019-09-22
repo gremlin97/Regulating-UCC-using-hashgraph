@@ -48,12 +48,31 @@ A robust type safe service written in rust
    5. OAP with his decrypted key along with RTM will send the data to IR for actual number.
    6. The call to IR can be skipped, if we encrypt it with some other key like RTM or a token.
 
-# Storing user pref and consent
+# User preferrence and consent registration
+
 1. User preferrences are stored in sparse merkle tree.
 2. Root of smt for all customers is then stored into merkle tree. 
    1. As we dont want it to changing frequently, it will be updated once a day. 
    2. Checking consistency will be very easy as root for checking inclusion and exclusion.
 3. Root of merkle tree will be stored in DLT representing a trusted and verified state of the running system. 
+
+
+# Incentivization/Monetization
+Users complaints needs to heard and action should be taken againts the resposible parties. 
+1. User can raise a complaint against a message received voilating his preference or consent. User has to sign the complaint with his certifications.
+2. Complaint raised by the user is shared with the TAP. Smart contracts after verifying if delivery exists or not get invokes and makes a transisition of network state. If a user has made a false accusationhis reputation is decreased. But if on the other side complaint is accepted then a complained against RTM is raised to IR.
+3. IR consructs user preferrence tree and generates a proof for exclusion for current corresponding category. If category is not being given consent user then RTM has to be penalized and reputation decreased. Otherwise, user score is decreased.
+
+RTM should be penalised such that it occurs very rare as compared to incentivization.
+
+# GDPR compliance
+According to GDPR, any entity processing user personal data must be designed and built with consideration of the priciples and provide safeguards to protect data.
+
+ 1. Events on hashgraph will be stored after decrypting it with user and IR public keys. It can be opened when both IR and user enters their private keys.
+ 2. RTM will not be able to see the actual filtered list. Number validated by IR will be split into 4 (RTM, IR, OAP, TAP) using shamirs shamir secret principle. It is then encrypted using the correspoding parties public keys. This ensures to see the users actual phone number atleaast 3 out of 4 parties are neeed everytime.
+ 3. Hashgraph is governed by a council consisting of market leaders belonging to every existing factor. Council ensures that rules governing hashgraph keeps updating with any new affecting factor rising which can disrupt the trust of network. For example, quantum computing can break tons of systems crediting to its the fastest calculations capacity.
+ 4. Also, GDPR to maintain equality in the system wants that every be able to delete his data from the controlling party. Blockchain as being "immutable" does not let exercesing this write but hashgraph council can update because of their governance power.
+   
 
 # Data structures
 1. merkle tree: https://hackernoon.com/merkle-tree-introduction-4c44250e2da7
