@@ -1,3 +1,34 @@
+# Regulating UCC Using DLT
+Link to the previous paper: 
+
+# Why using hasgraph over fabric
+Fabric is very easy to learn and provides feature of a permissioned blockchain in a easy to use manner. It has CA authority, validates authenticity of the call parameters by itself and achieves validation using very less resources as compared to bitcoin. It has a orderer which validates and decides the sequence of transaction thus avoiding proof-of-stake and proof-of-work. 
+1. Validated data still has to be replicated across each node after validation limiting scaling fabric to about 2500 calls per/sec.
+2. If many parties are involved in the ecosystem, sharing data across parties has largeoverhead. Say, for some transaction they are required to share data across each other without compromising privacy; they have to make seperate channels (Bsnl-TRAI, Airtel-TRAI) to ensure privacy. Smart contracts will have to be defined for manner of data exchange.
+
+Thus, a need for more robust, scalable and a public DLT was the best suited for achiving the ideal ecosystem.
+
+Here, we have started researching a public, scalable dlt named hedera. Hedera is a public DLT based on hashgraph protocol. It stores data as events instead of transactions. (Suprisingly, it does not store data as blocks. Blockchain is a type of DLT!) It uses gossip-about-gossip protocol to distribut the validated events across other praticipants.
+
+
+# Components
+1. RTM (Registered telemarketer) Registration service
+2. User preferrence and consent registration
+3. Trai global registry
+4. Filtering (Blocking calls not aligning to user consent)
+5. TSP (Telecom Service Provider) call forwarding service
+6. Audit service
+7. Complaint Portal
+8. Monetization (Incentivizating rule abiding nodes)
+
+# Stack
+1. Backend service: Rust, Rocket
+2. DLT: Hedera Hashgraph
+3. Other tools: Docker, Postman, Nginx
+
+# Design diagram
+
+
 # filtering-service
 A robust type safe service written in rust
 
@@ -24,7 +55,7 @@ A robust type safe service written in rust
 3. Root of merkle tree will be stored in DLT representing a trusted and verified state of the running system. 
 
 # Data structures
-1. merkle tree
+1. merkle tree: https://hackernoon.com/merkle-tree-introduction-4c44250e2da7
 2. sparse merkle tree
 
 
