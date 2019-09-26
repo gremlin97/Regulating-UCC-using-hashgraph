@@ -1,8 +1,8 @@
-use rocket_contrib::json::{Json, JsonValue};
-use rocket::http::Status;
+use rocket_contrib::json::{Json};
 
 use merkletree_rs::{db, MerkleTree, TestValue, Value};
-use serde::{Serialize, Deserialize}; // imports both the trait and the derive macro
+use serde::{Serialize, Deserialize}; 
+use serde_json::json;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct MessageBlock {
@@ -16,24 +16,35 @@ pub struct MessageBlock {
     rtm_id : String,
 }
 
-//impl MessageBlock {
-//    pub fn get_details(&self) -> String {
-//        let mut result: String = self::MessageBlock.message;
-//        result
-//    }
-//}
+impl MessageBlock {
+   pub fn get_string(self: &Self) -> String {
+       let message_block_object = json!({
+           "message" : self.message,
+           "user_number" : self.user_number,
+           "content_provider_id": self.content_provider_id,
+           "category": self.category,
+           "header_id": self.header_id,
+           "template_id": self.template_id,
+           "purpose": self.purpose,
+           "rtm_id": self.rtm_id
+       });
+    //    println!("{:?}", message_block_object);
+       message_block_object.to_string()
+
+   }
+}
 
 /// User pref are stored in a sparse-merkle tree
 /// initiate a db connection 
 #[post("/user", format = "application/json", data = "<message_block>")]
 pub fn check_user_pref(message_block : Json<MessageBlock>) -> String {
-    println!("user {:?}", message_block);
-
+    // println!("user {:?}", &message_block.into_inner());
+    let message_block : MessageBlock = message_block.into_inner();
     {
         let mut sto = db::Db::new("test".to_string(), true);
         let mut mt = MerkleTree::new(&mut sto, 140 as u32);
-
-        let phone_number : String = "9034218120".to_string();
+       
+        let phone_number : String = message_block.get_string();
         let phone_number_t : String = "9034218122".to_string();
         let val: TestValue = TestValue {
             bytes: phone_number.as_bytes().to_vec(),
@@ -47,15 +58,11 @@ pub fn check_user_pref(message_block : Json<MessageBlock>) -> String {
 
         mt.add(&val).unwrap();
         let mp = mt.generate_proof(val.hi());
-        println!("{:?}", mp);
-
         let mp2 = mt.generate_proof(val.hi());
-
         // check if the value exist
         let v =
             merkletree_rs::verify_proof(mt.get_root(), &mp, val.hi(), val.ht(), mt.get_num_levels());
         println!("{:?}", v);
-
         let v =
             merkletree_rs::verify_proof(mt.get_root(), &mp2, val2.hi(), val2.ht(), mt.get_num_levels());
         println!("{:?}", v);
@@ -83,11 +90,7 @@ pub fn check_user_pref(message_block : Json<MessageBlock>) -> String {
         */
 
 //        let template_constraint = get_template_constraint(&message_block.user)
-
-
-
     }
-
 
 }
 
