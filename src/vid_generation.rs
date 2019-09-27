@@ -1,25 +1,24 @@
+use rocket_contrib::json::{Json};
+use shamir::SecretData;
+use base64;
+use crate::client_call::SplitSet;
+
 ///generate splits and then encrypt them with their public keys
 /// store public keys to blockchain
 /// return that to RTM
 /// only valid RTM will be able to initiate the call sucessfully
-use rocket_contrib::json::{JsonValue, Json};
-use shamir::SecretData;
-use base64;
-use serde_json;
-//use recrypt::prelude::*;
-//use recrypt::Revealed;
-#[derive(Serialize, Deserialize, Debug, Clone, FromForm)]
-pub struct SplitSet {
-    pub share_rtm: String,
-    pub share_oap: String,
-    pub share_ir: String,
-    pub share_tap : String
-}
+
 ///splits the phone number
 /// out of 3 are needed to open the number
 /// number : phone number
 /// threshold : min needed to open number
 /// returns json of base64 splits
+/// 
+
+///loop around to check until
+// if contains '/' or '+'
+/// send data to requested parties
+/// send whole packet
 #[get("/<number>/<threshold>")]
 pub fn generate_splits(number: String, threshold: u8) -> Json<SplitSet> {
     let number_array = SecretData::with_secret(&number, threshold);
@@ -34,29 +33,13 @@ pub fn generate_splits(number: String, threshold: u8) -> Json<SplitSet> {
     let encoding_share_oap: String = base64::encode(&share_oap);
     let encoding_share_tap: String = base64::encode(&share_tap);
 
-    ///loop around to check until
-    /// if contains '/' or '+'
-    /// send data to requested parties
-    /// send whole packet
-
-//    recrypt
     let split_set = SplitSet{
         share_rtm: encoding_share_rtm,
         share_oap: encoding_share_oap,
         share_ir: encoding_share_ir,
         share_tap : encoding_share_tap
     };
-
-//     println!("Initiating call from RTM to OAP");
-//     crate::client_call::post_request(&split_set, "OAP".to_string());
-//     serde_json::to_string(&split_set).expect("Couldn't serialize")
-//     Json(json!({
-//             "share_rtm": encoding_share_rtm,
-//             "share_oap": encoding_share_oap,
-//             "share_ir": encoding_share_ir,
-//             "share_tap": encoding_share_tap
-//     }))
-        Json(split_set)
+    Json(split_set)
 }
 
 ///generate phone number using shamir secret

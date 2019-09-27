@@ -1,23 +1,7 @@
 use merkletree_rs::{db, MerkleTree, TestValue, Value};
 use once_cell::sync::OnceCell;
-use lazy_static;
 use std::sync::{Arc, Mutex};
 static HOSTNAME : OnceCell<String> = OnceCell::INIT;
-//#[derive(Clone)]
-//struct Node<'a> {
-//    mt : &'a MerkleTree
-//}
-//lazy_static! {
-//
-////      static ref mt: Mutex<MerkleTree<'static>> = {
-////      let mut m = MerkleTree::new(&mut sto, 140 as u32);
-////      Mutex::new(m)
-////    };
-////    static ref mt : MerkleTree =
-//    static ref HOSTNAME: Mutex<String> = Mutex::new(String::new("ff"));
-//}
-
-
 
 
 #[get("/<details>")]

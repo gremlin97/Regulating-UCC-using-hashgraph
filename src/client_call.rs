@@ -1,10 +1,41 @@
 use reqwest;
 use serde::{Deserialize, Serialize};
 use reqwest::Response;
-use std::io::{self, Write, Read};
+use std::io::{Read};
 
 
-#[derive(Serialize, Deserialize, Debug)]
+///MessageBlock: block containing information from RTM to IR
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MessageBlock {
+    pub message : String,
+    pub user_number : String,
+    pub content_provider_id : String,
+    pub category : String,
+    pub header_id : String,
+    pub template_id : String,
+    pub purpose : String,
+    pub rtm_id : String,
+}
+
+impl MessageBlock {
+   pub fn get_string(self: &Self) -> String {
+       let message_block_object = json!({
+           "message" : self.message,
+           "user_number" : self.user_number,
+           "content_provider_id": self.content_provider_id,
+           "category": self.category,
+           "header_id": self.header_id,
+           "template_id": self.template_id,
+           "purpose": self.purpose,
+           "rtm_id": self.rtm_id
+       });
+       message_block_object.to_string()
+
+   }
+}
+
+//SplitSet: splits the number into shares
+#[derive(Serialize, Deserialize, Debug, Clone, FromForm)]
 pub struct SplitSet {
     pub share_rtm: String,
     pub share_oap: String,

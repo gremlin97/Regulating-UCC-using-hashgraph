@@ -6,14 +6,8 @@
 
 use rocket_contrib::json::{Json};
 use shamir::SecretData;
+use crate::client_call::SplitSet;
 
-#[derive(Serialize, Deserialize, Debug, Clone, FromForm)]
-pub struct SplitSet {
-    pub share_rtm: String,
-    pub share_oap: String,
-    pub share_ir: String,
-    pub share_tap : String
-}
 
 /// post call as it will be not be accessible from browser safety
 ///decrypt share_oap
@@ -52,7 +46,7 @@ pub fn initiate_call(split_set : Json<SplitSet>) -> String {
 /// OR call ir to decrypt share_ir
 #[post("/tap", format = "application/json", data = "<split_set>")]
 pub fn terminate_call(split_set : Json<SplitSet>){
-//    println!("Received from OAP, split_set: {:?}.", split_set);
+//   println!("Received from OAP, split_set: {:?}.", split_set);
     let key_share_tap = base64::decode(&split_set.share_tap).unwrap();
     let key_share_ir = base64::decode(&split_set.share_ir).unwrap();
     let key_share_rtm = base64::decode(&split_set.share_rtm).unwrap();
