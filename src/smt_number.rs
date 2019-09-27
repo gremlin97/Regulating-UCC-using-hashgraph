@@ -59,21 +59,7 @@ pub fn register_customer(number : String, name : String) -> String {
     };
     mt.add(&val).unwrap();
     mt.print_full_tree();
-//    let mp = mt.generate_proof(val.hi());
-////    println!("{:?}", mp);
-////
-////
-////    // check if the value exist
-////    let v =
-////        merkletree_rs::verify_proof(mt.get_root(), &mp, val.hi(), val.ht(), mt.get_num_levels());
-////    println!("{:?}", v);
-//
-//    let t = generate_proof(&val, &mut mt);
-//    let v = is_exists(&mut mt, &mut val);
-
-//    format!("Hi {}. We have registered you {}, {}!", number, t, v)
-
-        format!("Hi")
+    format!("Hi")
 
 }
 
@@ -93,8 +79,7 @@ fn is_exists(mt : &mut MerkleTree, val : &TestValue) -> bool {
     let v = merkletree_rs::verify_proof(mt.get_root(), &mp,
                                         val.hi(), val.ht(),
                                         mt.get_num_levels());
-//    println!("{:?}", v);
-//    v
+    println!("{:?}", v);
     true
 }
 
@@ -102,7 +87,7 @@ fn is_exists(mt : &mut MerkleTree, val : &TestValue) -> bool {
 pub fn add_customer(add : String, add2 : String, add3 : String, add4 : String, add5 : String)  {
     let mut sto = db::Db::new("test".to_string(), true);
 //    println!("sto {:?}", sto);
-   let mut mt = MerkleTree::new(&mut sto, 140 as u32);
+   let mt = MerkleTree::new(&mut sto, 140 as u32);
 
   
 
@@ -147,4 +132,3 @@ pub fn add_customer(add : String, add2 : String, add3 : String, add4 : String, a
 //    println!("{:?}", v);
 
 }
-

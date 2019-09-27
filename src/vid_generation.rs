@@ -2,20 +2,26 @@
 /// store public keys to blockchain
 /// return that to RTM
 /// only valid RTM will be able to initiate the call sucessfully
-use rocket_contrib::json::{JsonValue};
+use rocket_contrib::json::{JsonValue, Json};
 use shamir::SecretData;
 use base64;
 use serde_json;
 //use recrypt::prelude::*;
 //use recrypt::Revealed;
-
+#[derive(Serialize, Deserialize, Debug, Clone, FromForm)]
+pub struct SplitSet {
+    pub share_rtm: String,
+    pub share_oap: String,
+    pub share_ir: String,
+    pub share_tap : String
+}
 ///splits the phone number
 /// out of 3 are needed to open the number
 /// number : phone number
 /// threshold : min needed to open number
 /// returns json of base64 splits
 #[get("/<number>/<threshold>")]
-pub fn generate_splits(number: String, threshold: u8) -> String {
+pub fn generate_splits(number: String, threshold: u8) -> Json<SplitSet> {
     let number_array = SecretData::with_secret(&number, threshold);
 
     let share_oap = number_array.get_share(1);
@@ -34,16 +40,23 @@ pub fn generate_splits(number: String, threshold: u8) -> String {
     /// send whole packet
 
 //    recrypt
-    let split_set = crate::client_call::SplitSet{
+    let split_set = SplitSet{
         share_rtm: encoding_share_rtm,
         share_oap: encoding_share_oap,
         share_ir: encoding_share_ir,
         share_tap : encoding_share_tap
     };
 
-    println!("Initiating call from RTM to OAP");
-    crate::client_call::post_request(&split_set, "OAP".to_string());
-    serde_json::to_string(&split_set).expect("Couldn't serialize")
+//     println!("Initiating call from RTM to OAP");
+//     crate::client_call::post_request(&split_set, "OAP".to_string());
+//     serde_json::to_string(&split_set).expect("Couldn't serialize")
+//     Json(json!({
+//             "share_rtm": encoding_share_rtm,
+//             "share_oap": encoding_share_oap,
+//             "share_ir": encoding_share_ir,
+//             "share_tap": encoding_share_tap
+//     }))
+        Json(split_set)
 }
 
 ///generate phone number using shamir secret

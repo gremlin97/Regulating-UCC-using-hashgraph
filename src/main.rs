@@ -10,21 +10,24 @@ extern crate threshold_secret_sharing as tss;
 #[macro_use]
 extern crate rocket_contrib;
 extern crate reqwest;
-#[macro_use]
 extern crate lazy_static;
 extern crate shamir;
 extern crate base64;
 extern crate recrypt;
+extern crate merkle_tree;
+extern crate crypto;
+extern crate bytes;
 
-use rocket_contrib::json::{Json};
-use merkletree_rs::{db, MerkleTree, TestValue, Value};
-use std::sync::Mutex;
-use std::sync::Arc;
+
+use merkle_tree::{MerkleTree, SerializationFormat};
+use crypto :: digest :: Digest;
+use crypto :: sha2 :: Sha256;
 
 mod smt_number;
 mod vid_generation;
 mod tsp1;
 mod client_call;
+mod messagestatus;
 
 
 
@@ -39,99 +42,49 @@ mod client_call;
 
 // }
 
-//struct Mt<'a> {
-//    mt : &'a MerkleTree<'a>,
-//}
-pub struct MySto {
-    sto : db::Db
+
+pub  fn  hash_leaf (value: & [ u8 ]) -> [ u8 ; 32 ] {
+    let  mut sha = Sha256 :: new ();
+    let  mut result = [ 0 ; 32 ];
+    sha. input ( & value);
+    sha. result ( & mut result);
+    println!("result: {:?}", &result);
+    result
 }
-//pub struct MyDb(db::Db);
-pub struct MyTree<'a>(MerkleTree<'a>);
 
 fn main() {
     println!("Starting filtering service..");
-//    println!("The entry for `0` is \"{}\".", HASHMAP.get(&0).unwrap());
-
-//    let mut sto = db::Db::new("test".to_string(), true);
-// //    println!("sto {:?}", sto);
-//    let mut mt = MerkleTree::new(&mut sto, 140 as u32);
-// //
-//    let phone_number : String = "9034218120".to_string();
-//    let phone_number_t : String = "9034218122".to_string();
-//    let val: TestValue = TestValue {
-//        bytes: phone_number.as_bytes().to_vec(),
-//        index_length: 10,
-//    };
-// //
-// //    let val2: TestValue = TestValue {
-// //        bytes: phone_number_t.as_bytes().to_vec(),
-// //        index_length: 10,
-// //    };
-// //
-//    mt.add(&val).unwrap();
-//    let mp = mt.generate_proof(val.hi());
-//    println!("{:?}", mp);
-// //
-// //    let mp2 = mt.generate_proof(val.hi());
-// //
-//    // check if the value exist
-//    let v =
-//        merkletree_rs::verify_proof(mt.get_root(), &mp, val.hi(), val.ht(), mt.get_num_levels());
-//    println!("{:?}", v);
-// //
-// //    let v =
-// //        merkletree_rs::verify_proof(mt.get_root(), &mp2, val2.hi(), val2.ht(), mt.get_num_levels());
-// //    println!("{:?}", v);
-// //
-// //
-// // check if the don't value exist (in that case, the 'ht' will be an empty value)
-//    let v = merkletree_rs::verify_proof(
-//        mt.get_root(),
-//        &mp,
-//        val.hi(),
-//        merkletree_rs::constants::EMPTYNODEVALUE,
-//        mt.get_num_levels(),
-//    );
-//    println!("{:?}", v);
-
-//    set_reminder();
-//    let config = MySto("user_registration".to_string());
-//    let mut sto = (db::Db::new("test".to_string(), true));
-//    let  mt = MyTree(MerkleTree::new(&mut sto, 140 as u32));
-
-
+    let spar = "b".to_string().into_bytes();
+    let serialized_hashed_a =
+            hash_leaf ( &spar);
+    
+    // println!("{:?}", &spar);
+     let mut merkle_tree = MerkleTree::from(&mut ["a", "b", "c"], SerializationFormat::Json);
+    // вызываем построение дерева    
+    merkle_tree.build().unwrap();
+    // печатаем вычисленный хэш рут дерева
+    println!("Merkle tree root hash: {:?}", merkle_tree.get_merkle_root());
+    // печатаем пруф-путь для транзакции b
+    println!("Merkle tree audit proot: {:?}", merkle_tree.audit_proof(&[172, 141, 131, 66, 187, 178, 54,
+     45, 19, 240, 165, 89, 163, 98, 27, 180, 7, 1, 19, 104, 137, 81, 100, 182, 40, 165, 79, 127, 195, 63, 
+     196, 60])
+     .unwrap());
+    // добавляем в дерево хэш транзакции d
+    merkle_tree.push(&String::from("d"));
+    // печатаем рут хэш дерева
+    println!("Merkle tree root hash: {:?}", merkle_tree.get_merkle_root());
+    // печатаем пруф-путь для транзакции b
+    println!("Merkle tree audit proot: {:?}", merkle_tree.audit_proof(&[172, 141, 131, 66, 187, 178, 54, 
+    45, 19, 240, 165, 89, 163, 98, 27, 180, 7, 1, 19, 104, 137, 81, 100, 182, 40, 165, 79, 127, 195, 63, 
+    196, 60])
+    .unwrap());
+    
     rocket::ignite()
         // .manage(MySto{ sto : db::Db::new("test".to_string(), true)})
-        .mount("/", routes![smt_number::register_customer, smt_number::set_reminders, tsp1::initiate_call, tsp1::terminate_call, smt_number::add_customer])
+        .mount("/", routes![smt_number::register_customer, smt_number::set_reminders, tsp1::initiate_call, tsp1::terminate_call, smt_number::add_customer, messagestatus::check_user_pref])
         .mount("/vid", routes![vid_generation::generate_splits, vid_generation::recover_secret])
         .mount("/add", routes![smt_number::add_customer])
         .launch();
-}
-
-//
-#[get("/<details>")]
-pub fn set_reminder(details : String) -> String {
-   //service to database
-//    println!("values key{} value {}", HASHMAP.get("amber").unwrap());
-//    println!("The entry for `0` is \"{}\".", HASHMAP.get(&0).unwrap());
-//    println!("values keyvalue {:?}", HOSTNAME);
-//    format!("Task: {} saved for at time {}, sto {}.", details, mt.0, sto.0)
-    let mut sto = db::Db::new("test".to_string(), true);
-       let mut mt = MerkleTree::new(&mut sto, 140 as u32);
-       let val: TestValue = TestValue {
-       bytes: details.as_bytes().to_vec(),
-       index_length: 10,
-   };
-   let mp = mt.generate_proof(val.hi());
-   println!("{:?}", mp);
-   // check if the value exist
-   let v =
-       merkletree_rs::verify_proof(mt.get_root(), &mp, val.hi(), val.ht(), mt.get_num_levels());
-   println!("{:?}", v);
-//
-    "Sdfsd".to_string()
-
-
 }
 
 

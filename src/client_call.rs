@@ -1,13 +1,10 @@
 use reqwest;
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
-
+use reqwest::Response;
 use std::io::{self, Write, Read};
 
-use hyper::rt::{self, Future, Stream};
 
-
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SplitSet {
     pub share_rtm: String,
     pub share_oap: String,
@@ -15,14 +12,12 @@ pub struct SplitSet {
     pub share_tap : String
 }
 
-fn get_request(uri : String) -> String {
-    let mut response = reqwest::get(&uri).expect("failed to send request");
-    println!("Response Status: {}", response.status());
-
-    let mut buf = String::new();
-    response.read_to_string(&mut buf).expect("failed to read response");
-    buf
-
+pub fn get_request(uri : String) -> Response {
+    let client = reqwest::Client::new();
+    let response = client.get("http://localhost:8000/vid/9034218120/4")
+    .send()
+    .expect("Failed to send request");
+    response
 }
 
 pub fn post_request(split_set: &SplitSet, dest : String ) -> bool {
@@ -56,3 +51,4 @@ pub fn post_request(split_set: &SplitSet, dest : String ) -> bool {
         false
     }
 }
+
