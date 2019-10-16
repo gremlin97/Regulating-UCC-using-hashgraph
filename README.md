@@ -73,7 +73,13 @@ According to GDPR, any entity processing user personal data must be designed and
  3. Hashgraph is governed by a council consisting of market leaders belonging to every existing factor. Council ensures that rules governing hashgraph keeps updating with any new affecting factor rising which can disrupt the trust of network. For example, quantum computing can break tons of systems crediting to its the fastest calculations capacity.
  4. Also, GDPR to maintain equality in the system wants that every be able to delete his data from the controlling party. Blockchain as being "immutable" does not let exercesing this write but hashgraph council can update because of their governance power.
    
+# Smart Contracts
+Hedera uses the same compiled solidity code. 
+Byte code needs to be stored as a file on hedera network node. Charges are charged based on certain parameters like network charges, data size etc. A file id is returned to be used for future reference. These files can be queried from a single node reducing the transaction cost.</br>
 
+Smart contracts can be created and called by assigning the file id of the byte code stored. 
+
+To initit
 # Data structures
 1. merkle tree: https://hackernoon.com/merkle-tree-introduction-4c44250e2da7
 2. sparse merkle tree
