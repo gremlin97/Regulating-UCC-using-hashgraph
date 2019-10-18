@@ -16,7 +16,7 @@ use crate::client_call::SplitSet;
 /// OR call ir to decrypt share_ir
 #[post("/oap", format = "application/json", data = "<split_set>")]
 pub fn initiate_call(split_set : Json<SplitSet>) -> String {
-//    println!("Received from RTM, split_set: {:?}.", split_set);
+    println!("Received from RTM, split_set: {:?}.", split_set);
     let key_share_oap = base64::decode(&split_set.share_oap).unwrap();
     let key_share_ir = base64::decode(&split_set.share_ir).unwrap();
     let key_share_rtm = base64::decode(&split_set.share_rtm).unwrap();

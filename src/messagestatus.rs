@@ -40,27 +40,34 @@ impl UserPreference {
 #[post("/user/<user_id>", format = "application/json", data = "<user_preference>")]
 pub fn check_user_pref(user_preference : Json<UserPreference>, user_id : String) -> String {
     let user_preference : UserPreference = user_preference.into_inner();
-    {
+    
         let mut sto = db::Db::new(user_id.to_string(), false);
         let mut mt = MerkleTree::new(&mut sto, 140 as u32);
-
+        
         let user_preference_rtm : String = user_preference.get_string();
-        let val: TestValue = TestValue {
+        let mut val: TestValue = TestValue {
             bytes: user_preference_rtm.as_bytes().to_vec(),
             index_length: 10,
         };
         mt.add(&val).unwrap();
         println!("{:?}", mt.get_root());
 
-     }
-    format!("consent and preference matched")
+        let user_preference_rtm : String = user_preference.get_string();
+        let val1 : TestValue = TestValue {
+            bytes: "9034218120".as_bytes().to_vec(),
+            index_length: 10,
+        };
+    mt.add(&val1).unwrap();
+    println!("{:?}", mt.get_root());
+    format!("completed")
+    
 }
 
 
 
 
 #[post("/proof/<user_id>", format = "application/json", data = "<user_preference>")]
-pub fn generate_proof(user_preference : Json<UserPreference>, user_id : String) {
+pub fn generate_proof(user_preference : Json<UserPreference>, user_id : String) -> String {
     let mut sto = db::Db::new(user_id.to_string(), false);
     let mut mt = MerkleTree::new(&mut sto, 140);
     let user_preference : UserPreference = user_preference.into_inner();
@@ -72,14 +79,14 @@ pub fn generate_proof(user_preference : Json<UserPreference>, user_id : String) 
     };
     println!("I am here! {:?}", mt.get_root());
     let mp = mt.generate_proof(val.hi());
-        // println!("{:?}", mp);
-     let v = merkletree_rs::verify_proof(
+    let v = merkletree_rs::verify_proof(
                 mt.get_root(), 
                 &mp, 
                 val.hi(),
                 val.ht(),
                 mt.get_num_levels());
-        println!("OKAY {:?}", v);
+    println!("OKAY {:?}", v);
+    format!("{}", v)
 }
 
 

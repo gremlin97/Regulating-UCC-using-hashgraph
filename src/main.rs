@@ -30,6 +30,8 @@ mod vid_generation;
 mod tsp1;
 mod client_call;
 mod messagestatus;
+mod rtm;
+mod ir;
 
 
 pub  fn  hash_leaf (value: & [ u8 ]) -> [ u8 ; 32 ] {
@@ -75,6 +77,7 @@ fn main() {
         messagestatus::non_inclusion])
         .mount("/vid", routes![vid_generation::generate_splits, vid_generation::recover_secret])
         .mount("/add", routes![smt_number::add_customer])
+        .mount("/", routes![rtm::trigger_ad_service, ir::trigger_ir_service])
         .launch();
 }
 
