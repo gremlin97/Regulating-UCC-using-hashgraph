@@ -31,10 +31,11 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 
 
 # filtering-service
-A robust type safe service written in rust. Postman API documentation: [Postman Link](https://web.postman.co/collections/2319897-d8f7bc8d-ed87-4cb9-9670-64c5e4fc0482?version=latest&workspace=1a19b2bd-5642-46f1-8904-ed5f9d893609)
+A robust type safe service written in rust. Postman API documentation: [Postman Link](https://documenter.getpostman.com/view/2319897/SVtbQ5aG?version=latest)
 
 
-# Sequence flow and description
+## Sequence flow and description
+
 1. CP will send content and subsriber list to the IR. 
 2. IR based on preferrence of users will filter the subscribers.
 3. IR has to for each customer, fetch his sparse merkle tree and verify is particular category exists.
@@ -48,10 +49,11 @@ A robust type safe service written in rust. Postman API documentation: [Postman 
    5. OAP with his decrypted key along with RTM will send the data to IR for actual number.
    6. The call to IR can be skipped, if we encrypt it with some other key like RTM or a token.
    
-# Sequence flow diagram
+## Sequence flow diagram
 
 ![alt text](https://user-images.githubusercontent.com/23367724/67154904-26af3e00-f321-11e9-979b-394b508cfdbc.png)
-# User preferrence and consent registration
+
+## User preferrence and consent registration
 
 1. User preferrences are stored in sparse merkle tree.
 2. Root of smt for all customers is then stored into merkle tree. 
@@ -60,7 +62,8 @@ A robust type safe service written in rust. Postman API documentation: [Postman 
 3. Root of merkle tree will be stored in DLT representing a trusted and verified state of the running system. 
 
 
-# Incentivization/Monetization
+## Incentivization/Monetization
+
 Users complaints needs to heard and action should be taken againts the resposible parties. 
 1. User can raise a complaint against a message received voilating his preference or consent. User has to sign the complaint with his certifications.
 2. Complaint raised by the user is shared with the TAP. Smart contracts after verifying if delivery exists or not get invokes and makes a transisition of network state. If a user has made a false accusationhis reputation is decreased. But if on the other side complaint is accepted then a complained against RTM is raised to IR.
@@ -68,7 +71,8 @@ Users complaints needs to heard and action should be taken againts the resposibl
 
 RTM should be penalised such that it occurs very rare as compared to incentivization.
 
-# GDPR compliance
+## GDPR compliance
+
 According to GDPR, any entity processing user personal data must be designed and built with consideration of the priciples and provide safeguards to protect data.
 
  1. Events on hashgraph will be stored after decrypting it with user and IR public keys. It can be opened when both IR and user enters their private keys.
