@@ -47,7 +47,10 @@ A robust type safe service written in rust
    4. RTM will have all the shares. RTM after decrypting it's share will initiate the call to OAP.
    5. OAP with his decrypted key along with RTM will send the data to IR for actual number.
    6. The call to IR can be skipped, if we encrypt it with some other key like RTM or a token.
+   
+# Sequence flow diagram
 
+![alt text] (https://user-images.githubusercontent.com/23367724/67154904-26af3e00-f321-11e9-979b-394b508cfdbc.png)
 # User preferrence and consent registration
 
 1. User preferrences are stored in sparse merkle tree.
