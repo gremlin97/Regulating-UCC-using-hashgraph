@@ -50,7 +50,7 @@ A robust type safe service written in rust
    
 # Sequence flow diagram
 
-![alt text] (https://user-images.githubusercontent.com/23367724/67154904-26af3e00-f321-11e9-979b-394b508cfdbc.png)
+![alt text](https://user-images.githubusercontent.com/23367724/67154904-26af3e00-f321-11e9-979b-394b508cfdbc.png)
 # User preferrence and consent registration
 
 1. User preferrences are stored in sparse merkle tree.
