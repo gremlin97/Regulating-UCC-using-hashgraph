@@ -28,9 +28,13 @@ pub fn trigger_ad_service( ad_target : Json<AdContent>, user_id : String) {
         .expect("Failed to send request");
     assert_eq!(response.status(), 200);
 
-    let mut buf = String::new();
-    response.read_to_string(&mut buf).expect("Failed to read response");
-    println!("{}", buf);
+    // let mut buf = String::new();
+    // println!("Eligible numbers shamir-share received: {}", buf);
+    println!("Transfer the ads and splits to OAP....");
+    if let Ok(split_set) = response.json::<SplitSet>() {
+         println!("Forwarding the keys to OAP..");
+         crate::client_call::post_request(&split_set, "OAP".to_string());
+    }
 
     
 }
