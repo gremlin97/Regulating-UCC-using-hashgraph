@@ -31,7 +31,7 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 
 
 # filtering-service
-A robust type safe service written in rust
+A robust type safe service written in rust. Postman API documentation: [Postman Link](https://web.postman.co/collections/2319897-d8f7bc8d-ed87-4cb9-9670-64c5e4fc0482?version=latest&workspace=1a19b2bd-5642-46f1-8904-ed5f9d893609)
 
 
 # Sequence flow and description
