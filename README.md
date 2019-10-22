@@ -31,6 +31,7 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 
 
 # filtering-service
+
 A robust type safe service written in rust. Postman API documentation: [Postman Link](https://documenter.getpostman.com/view/2319897/SVtbQ5aG?version=latest)
 
 
@@ -64,7 +65,8 @@ A robust type safe service written in rust. Postman API documentation: [Postman 
 
 ## Incentivization/Monetization
 
-Users complaints needs to heard and action should be taken againts the resposible parties. 
+Users complaints needs to heard and action should be taken againts the resposible parties.
+
 1. User can raise a complaint against a message received voilating his preference or consent. User has to sign the complaint with his certifications.
 2. Complaint raised by the user is shared with the TAP. Smart contracts after verifying if delivery exists or not get invokes and makes a transisition of network state. If a user has made a false accusationhis reputation is decreased. But if on the other side complaint is accepted then a complained against RTM is raised to IR.
 3. IR consructs user preferrence tree and generates a proof for exclusion for current corresponding category. If category is not being given consent user then RTM has to be penalized and reputation decreased. Otherwise, user score is decreased.
@@ -79,17 +81,22 @@ According to GDPR, any entity processing user personal data must be designed and
  2. RTM will not be able to see the actual filtered list. Number validated by IR will be split into 4 (RTM, IR, OAP, TAP) using shamirs shamir secret principle. It is then encrypted using the correspoding parties public keys. This ensures to see the users actual phone number atleaast 3 out of 4 parties are neeed everytime.
  3. Hashgraph is governed by a council consisting of market leaders belonging to every existing factor. Council ensures that rules governing hashgraph keeps updating with any new affecting factor rising which can disrupt the trust of network. For example, quantum computing can break tons of systems crediting to its the fastest calculations capacity.
  4. Also, GDPR to maintain equality in the system wants that every be able to delete his data from the controlling party. Blockchain as being "immutable" does not let exercesing this write but hashgraph council can update because of their governance power.
-   
-# Smart Contracts
+
+## Smart Contracts
+
 Hedera uses the same compiled solidity code. 
 Byte code needs to be stored as a file on hedera network node. Charges are charged based on certain parameters like network charges, data size etc. A file id is returned to be used for future reference. These files can be queried from a single node reducing the transaction cost.</br>
 
-Smart contracts can be created and called by assigning the file id of the byte code stored. 
+Smart contracts can be created and called by assigning the file id of the byte code stored. </br>
 
-To initit
-# Data structures
+Thoughts about smart contracts related to UCC case.
+
+1. IR is responsible for auditing here. IR has to have the history of when the number was accessed by any profiting stakeholder. Here, RTM, OAP and TAP are the parties benifittiing from the mentioned scenario. RTM share has to be accessed for getting the actual decrypted number. IR has to contacted before accessing any number. That time, we can have a smart contract ensuring the parties validity and storing the interaction as a transaction.
+2. Consistency of merkle tree storing the user preference snapshot root. As change in preferences is not dynamic, it has to be checked for consistency with respect to new state. Prervious existing tree root has to be a child root of the new tree root version.
+3. Should we be storing the template?
+4. Also, we have to penalize the RTM to let pass or creating spam calls. Smart contracts will check the RTM behaviour in the ecosystem. Based on the performed behaaviour penalization or profit will be calculated and imposed via smart contract.
+
+## Data structures
+
 1. merkle tree: https://hackernoon.com/merkle-tree-introduction-4c44250e2da7
 2. sparse merkle tree
-
-
-
