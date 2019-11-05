@@ -1,8 +1,51 @@
 # Regulating UCC Using DLT
-Link to the previous paper: 
 
-# Why using hasgraph over fabric
-Fabric is very easy to learn and provides feature of a permissioned blockchain in a easy to use manner. It has CA authority, validates authenticity of the call parameters by itself and achieves validation using very less resources as compared to bitcoin. It has a orderer which validates and decides the sequence of transaction thus avoiding proof-of-stake and proof-of-work. 
+## Abstract
+
+Unsolicited commercial communications (UCC) means any commercial communications that is neither in accordance with consent or preference of the consumer. Though government authorities have tried to curb the issue of UCC by trying to regulate and making the ecosystem transparent. But all centralised approaches such as DND have failed to stop the UCC.
+
+UCC has incurred users losses of around 13 billions dollars. UCC has made users to either block or not read the messages leading to useful ads even being labelled as spam. There is a need of a decentralized ecosystem that enbales a co-regulation between involved stakeholders.
+
+## Need of a public DLT
+
+### Problems with present ecosystem
+
+* No way of for a content provider to verify the authenticity of an RTM. Also, as system is scattered it is next to impossible to verify and penalize an RTM in case of negligence.
+  
+* Moreover, as as there is not efficient auditing mechanism there is no incentive for an RTM to work fairly. 
+  
+* 
+
+### Problems with private DLT (using fabric as standard)
+
+* Data needs to be shared across stakeholders or nodes (channels) in a secure manner. This adds a large network overhead and slows down the ecosystem.
+
+* Due to protocols inlcuding ordering, validating etc. transactions that can be handled has a limit of about 2500 calls per/sec.
+
+* smart contratcts once instantiated can not be changed and a minor error in them can lead to mismanagement of entire system.
+
+* There is not option of opt out as data once recorded on DLT can not be deleted.
+
+* there is no mechanism of token-economics involved. Stakeholder needs to be penalized and rewarded based on their action.
+
+
+### Problems with Public DLT
+
+* transactions stored on DLT can be accessed by anyone.
+  
+* Anyone can try to query or make a transaction overloading the DLT network.
+  
+### Propsed solution using hedera
+
+* Hedera is public DLT using hashgraph consensus algorithm.
+* A reputation score is associated with RTM. RTM is not given access to user data to be exploited. Score makes system transparent and CPs can negotiate better rates.
+
+* Shamir keys
+
+## Why using hasgraph over fabric
+
+Fabric is very easy to learn and provides feature of a permissioned blockchain in a easy to use manner. It has CA authority, validates authenticity of the call parameters by itself and achieves validation using very less resources as compared to bitcoin. It has a orderer which validates and decides the sequence of transaction thus avoiding proof-of-stake and proof-of-work.
+
 1. Validated data still has to be replicated across each node after validation limiting scaling fabric to about 2500 calls per/sec.
 2. If many parties are involved in the ecosystem, sharing data across parties has largeoverhead. Say, for some transaction they are required to share data across each other without compromising privacy; they have to make seperate channels (Bsnl-TRAI, Airtel-TRAI) to ensure privacy. Smart contracts will have to be defined for manner of data exchange.
 
@@ -10,8 +53,16 @@ Thus, a need for more robust, scalable and a public DLT was the best suited for 
 
 Here, we have started researching a public, scalable dlt named hedera. Hedera is a public DLT based on hashgraph protocol. It stores data as events instead of transactions. (Suprisingly, it does not store data as blocks. Blockchain is a type of DLT!) It uses gossip-about-gossip protocol to distribut the validated events across other praticipants.
 
+1. It is complete asychronous, no leaders, no round robin, no proof-of-stake.
+2. It validates and orders the reults with probability one.
+3. It is based on gossip protocol. In hedera, participants gossip about gossip. This reduces overhead as only new information is sent to the next participant.
+4. Unlike fabric, gossip about gossip allows agreement to reach without actual voting over the internet.
+5. hedera being a public blockchain has a conecpt of hbar (tokens). These tokens can be used to incentivize/monetize the ecosystem serving all the stakeholders.
+6. The governing council heading hedera have the power to update and modify the policies adhering to new discoveries and advancements.
+7. In compliance to GDPR, council can set a mechanism to follow that for user data if stored anywhere on network.
 
-# Components
+## Components
+
 1. RTM (Registered telemarketer) Registration service
 2. User preferrence and consent registration
 3. Trai global registry
@@ -21,12 +72,14 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 7. Complaint Portal
 8. Monetization (Incentivizating rule abiding nodes)
 
-# Stack
+## Stack
+
 1. Backend service: Rust, Rocket
 2. DLT: Hedera Hashgraph
 3. Other tools: Docker, Postman, Nginx
 
-# Design diagram
+## Design diagram
+
 ![alt text](https://user-images.githubusercontent.com/23367724/65387692-5b05fd80-dd67-11e9-8963-c0103260ad9f.png)
 
 
