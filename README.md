@@ -14,7 +14,7 @@ UCC has incurred users losses of around 13 billions dollars. UCC has made users 
   
 * Moreover, as as there is not efficient auditing mechanism there is no incentive for an RTM to work fairly. 
   
-* 
+
 
 ### Problems with private DLT (using fabric as standard)
 
@@ -83,19 +83,21 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 ![alt text](https://user-images.githubusercontent.com/23367724/65387692-5b05fd80-dd67-11e9-8963-c0103260ad9f.png)
 
 
-# filtering-service
+## filtering-service
 
 A robust type safe service written in rust. Postman API documentation: [Postman Link](https://documenter.getpostman.com/view/2319897/SVtbQ5aG?version=latest)
 
 
 ## Sequence flow and description
 
-1. CP will send content and subsriber list to the IR. 
-2. IR based on preferrence of users will filter the subscribers.
-3. IR has to for each customer, fetch his sparse merkle tree and verify is particular category exists.
+1. A message will be initiated by Content provider. CP will request filtering service to handle the validations.
+2. Filtering service will check for consent. Instead of validating the preference, it will done by IR.
+3. RTM will send subsriber list to the IR. 
+4. IR based on preferrence of users will filter the subscribers.
+5. IR has to for each customer, fetch his sparse merkle tree and verify is particular category exists.
    1. smt will have bit for that pref-category set as true.
    2. Check using inclusion principle.
-4. IR will generate VIDs for eligible customers against their phone number.
+6. IR will generate VIDs for eligible customers against their phone number.
    1. Using shamir we will split the number into 4 shares. (shamir overcomes storing vid on DLT)
    2. At any time to access the number, there has to be present atleast >=3 customers.
    3. encrypt the key with correspoding public keys make sure requests are being sent by valid client.
@@ -126,6 +128,20 @@ Users complaints needs to heard and action should be taken againts the resposibl
 
 RTM should be penalised such that it occurs very rare as compared to incentivization.
 
+RTM can be penalized in below mentioned cases:
+
+ 1. It has sent a message not adhering to the mentioned category.
+ 2. It has used another template.
+ 3. It has again registered a new number and is repeating the above tasks.
+
+
+RTM should be incentivized: 
+
+ 1. It has followed and was fair throughout the process.
+ 2. Didnt carried the UTM messages.
+
+Customer preferences change reflects on global registry after a week. Penalization and incentivization should be calculated after the update has been done. IR will run a proof generation for the open complaints and will penalize the stakeholders after verification. 
+
 ## GDPR compliance
 
 According to GDPR, any entity processing user personal data must be designed and built with consideration of the priciples and provide safeguards to protect data.
@@ -149,7 +165,28 @@ Thoughts about smart contracts related to UCC case.
 3. Should we be storing the template?
 4. Also, we have to penalize the RTM to let pass or creating spam calls. Smart contracts will check the RTM behaviour in the ecosystem. Based on the performed behaaviour penalization or profit will be calculated and imposed via smart contract.
 
+## merkle tree thoughts
+
+1. index length for the module represents 
+   
+|                           bytes                           |
+|------[index_length]------|---[bytes.len()-index_length]---|
+|  used for leaf position  |      used for leaf hash        |
+
+2. index_length can be though of fixing a particular category. Example, index_length = 30 includes a category : "1", mode : "1" . This will remain fix referring to fixation of categories.
+
+3. bytes.len()-index_length is the data to be stored. This can be a binary representation for index_length. Logically,  each leaf represents ( index_length : index_data ) collectively.
+
+
+## FAQS
+
+q1. Is vid generated same for number after first time?
+q2. Does trx of oap to tap also be included?
+q3. does accessing of data for pref also should be recorded?
+q3. Should message be also encrypted?
+
 ## Data structures
 
-1. merkle tree: https://hackernoon.com/merkle-tree-introduction-4c44250e2da7
-2. sparse merkle tree
+1. [merkle tree](https://hackernoon.com/merkle-tree-introduction-4c44250e2da7)
+2. [Hedera hashgraph whitepaper](https://www.hedera.com/whitepaper)
+3. [Bat monetizing attention](https://basicattentiontoken.org/BasicAttentionTokenWhitePaper-4.pdf)
