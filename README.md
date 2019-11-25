@@ -167,11 +167,11 @@ Thoughts about smart contracts related to UCC case.
 
 ## merkle tree thoughts
 
-1. index length for the module represents 
+1. Index length for the module represents 
    
-|                           bytes                           |
-|------[index_length]------|---[bytes.len()-index_length]---|
-|  used for leaf position  |      used for leaf hash        |
+    |------------------------bytes---------------------------| </br>
+    |------[index_length]-------|---[bytes.len()-index_length]---| </br>
+    |--  used for leaf position |      used for leaf hash        | </br>
 
 2. index_length can be though of fixing a particular category. Example, index_length = 30 includes a category : "1", mode : "1" . This will remain fix referring to fixation of categories.
 
@@ -180,10 +180,10 @@ Thoughts about smart contracts related to UCC case.
 
 ## FAQS
 
-q1. Is vid generated same for number after first time?
-q2. Does trx of oap to tap also be included?
-q3. does accessing of data for pref also should be recorded?
-q3. Should message be also encrypted?
+q1. Is vid generated same for number after first time? <br>
+q2. Does trx of oap to tap also be included? <br>
+q3. does accessing of data for pref also should be recorded? <br>
+q3. Should message be also encrypted? <br>
 
 ## Data structures
 

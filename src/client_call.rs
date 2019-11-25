@@ -53,7 +53,7 @@ pub fn get_request(uri : String) -> Response {
 
 
 
-pub fn post_request(split_set: &SplitSet, dest : String ) -> bool {
+pub fn post_request(split_set: &SplitSet, dest : String, message : String ) -> bool {
     let res = json!( {
             "share_ir": split_set.share_ir,
             "share_oap": split_set.share_oap,
@@ -63,12 +63,12 @@ pub fn post_request(split_set: &SplitSet, dest : String ) -> bool {
 
     let uri;
     if dest == "OAP" {
-        uri = "http://localhost:8000/oap"
+        uri = "http://localhost:8000/oap/".to_string() + &message;
     } else {
-        uri = "http://localhost:8000/tap"
+        uri = "http://localhost:8000/tap/".to_string() + &message;
     }
     let client = reqwest::Client::new();
-    let mut response = client.post(uri)
+    let mut response = client.post(&uri)
         .json(&res)
         .send()
         .expect("Failed to send request");

@@ -29,8 +29,7 @@ impl UserPreference {
        let message_block_object = json!({
            "a_mode" : self.mode,
            "b_category" : self.category,
-           "time": self.time,
-           "day": self.day,
+           "preference" : 1
         });
        message_block_object.to_string()
 
@@ -47,7 +46,7 @@ pub fn add_user_pref(user_preference : Json<UserPreference>, user_id : String) -
         let user_preference_rtm : String = user_preference.get_string();
         println!("user_preference_rtm {}, length {}", &user_preference_rtm, &user_preference_rtm.len());
 
-        let mut val: TestValue = TestValue {
+        let val: TestValue = TestValue {
             bytes: user_preference_rtm.as_bytes().to_vec(),
             index_length: 30,
         };
@@ -57,15 +56,14 @@ pub fn add_user_pref(user_preference : Json<UserPreference>, user_id : String) -
     
 }
 
-
- #[post("/proof/<user_id>", format = "application/json", data = "<user_preference>")]
+#[post("/proof/<user_id>", format = "application/json", data = "<user_preference>")]
 pub fn generate_proof(user_preference : Json<UserPreference>, user_id : String) -> String {
     let mut sto = db::Db::new(user_id.to_string(), false);
     let mut mt = MerkleTree::new(&mut sto, 140);
     let user_preference : UserPreference = user_preference.into_inner();
 
    let user_preference_rtm : String = user_preference.get_string();
-   println!("user_preference_rtm {}", &user_preference_rtm);
+   println!("user_preference_rtm {} length {}", &user_preference_rtm, &user_preference_rtm[0..30]);
         let val: TestValue = TestValue {
             bytes: user_preference_rtm.as_bytes().to_vec(),
             index_length: 30,
@@ -92,7 +90,7 @@ pub fn non_inclusion(user_preference : Json<UserPreference>, user_id : String) {
     let user_preference_rtm : String = user_preference.get_string();
         let val: TestValue = TestValue {
             bytes: user_preference_rtm.as_bytes().to_vec(),
-            index_length: 10,
+            index_length: 30,
     };
     let mp = mt.generate_proof(val.hi());
 
@@ -113,7 +111,7 @@ fn get_splits_number() {
     let mut response = crate::client_call::get_request(url.to_string());
     if let Ok(split_set) = response.json::<SplitSet>() {
          println!("Forwarding the keys to OAP..");
-         crate::client_call::post_request(&split_set, "OAP".to_string());
+         crate::client_call::post_request(&split_set, "OAP".to_string(), "What are you doing ananya?".to_string());
     }
 }
 

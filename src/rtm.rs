@@ -15,7 +15,7 @@ pub struct AdContent {
     pub day : String,
 }
 #[post("/rtm/send_ads/<user_id>", format = "application/json", data = "<ad_target>")]
-pub fn trigger_ad_service( ad_target : Json<AdContent>, user_id : String) {
+pub fn trigger_ad_service( ad_target : Json<AdContent>, user_id : String) -> String {
     let ad_target : AdContent = ad_target.into_inner();
     println!("{:?}", ad_target);
 
@@ -27,14 +27,22 @@ pub fn trigger_ad_service( ad_target : Json<AdContent>, user_id : String) {
         .send()
         .expect("Failed to send request");
     assert_eq!(response.status(), 200);
+    
+    // if let Ok(split_set) = response.json::<SplitSet>() {
+    //     if split_set.share_rtm == "null" {
+    //         println!("Stopped ");
+            
+    //     }
+    // }
 
     // let mut buf = String::new();
     // println!("Eligible numbers shamir-share received: {}", buf);
     println!("Transfer the ads and splits to OAP....");
     if let Ok(split_set) = response.json::<SplitSet>() {
          println!("Forwarding the keys to OAP..");
-         crate::client_call::post_request(&split_set, "OAP".to_string());
+         crate::client_call::post_request(&split_set, "OAP".to_string(), "What are you doing Ananya?".to_string());
     }
 
+    "------------------------- Transmission done succesfully!-------------------------".to_string()
     
 }

@@ -44,7 +44,7 @@ pub fn send_message_after_filtering( message_body : Json<MessageBody>, user_id :
                 mode : message_body.Purpose,
                 category : message_body.Category,
                 time : message_body.Message,
-                day : "monday".to_string()
+                day : message_body.HeaderId
             };
         let uri = "http://localhost:8000/rtm/send_ads/".to_string() + &user_id;
         let client = reqwest::Client::new();
