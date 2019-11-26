@@ -15,7 +15,6 @@ UCC has incurred users losses of around 13 billions dollars. UCC has made users 
 * Moreover, as as there is not efficient auditing mechanism there is no incentive for an RTM to work fairly. 
   
 
-
 ### Problems with private DLT (using fabric as standard)
 
 * Data needs to be shared across stakeholders or nodes (channels) in a secure manner. This adds a large network overhead and slows down the ecosystem.
@@ -65,12 +64,13 @@ Here, we have started researching a public, scalable dlt named hedera. Hedera is
 
 1. RTM (Registered telemarketer) Registration service
 2. User preferrence and consent registration
-3. Trai global registry
+3. Trai global registry IR 
 4. Filtering (Blocking calls not aligning to user consent)
 5. TSP (Telecom Service Provider) call forwarding service
 6. Audit service
 7. Complaint Portal
 8. Monetization (Incentivizating rule abiding nodes)
+9. Token system 
 
 ## Stack
 
@@ -165,6 +165,10 @@ Thoughts about smart contracts related to UCC case.
 3. Should we be storing the template?
 4. Also, we have to penalize the RTM to let pass or creating spam calls. Smart contracts will check the RTM behaviour in the ecosystem. Based on the performed behaaviour penalization or profit will be calculated and imposed via smart contract.
 
+
+## contributions
+1. 3 open source contributions to recrypt, rustc and mozilla
+2. Article submitted to 
 ## merkle tree thoughts
 
 1. Index length for the module represents 
