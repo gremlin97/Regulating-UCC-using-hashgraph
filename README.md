@@ -168,7 +168,12 @@ Thoughts about smart contracts related to UCC case.
 
 ## contributions
 1. 3 open source contributions to recrypt, rustc and mozilla
-2. Article submitted to 
+2. Short paper submitted to IEEE iit gandhinagar
+
+
+## future work
+1. Moulding our model to OTT paltforms
+2. Implement score model and preference at user-side.
 ## merkle tree thoughts
 
 1. Index length for the module represents 
