@@ -16,6 +16,14 @@ extern crate base64;
 // extern crate recrypt;
 extern crate crypto;
 extern crate bytes;
+extern crate merkle;
+extern crate ring;
+
+use ring::digest::{Algorithm, Context, SHA512};
+
+use merkle::{Hashable, MerkleTree, Proof};
+
+
 
 use rocket_prometheus::PrometheusMetrics;
 use rust_sodium::crypto::secretbox;
@@ -27,29 +35,18 @@ mod preference_service;
 mod rtm;
 mod ir;
 mod filtering_service;
+
+#[allow(non_upper_case_globals)]
+static digest: &'static Algorithm = &SHA512;
+
 fn main() {
+    let values = vec!["one", "two", "three", "four"];   
+    let count = values.len();
+    let tree = MerkleTree::from_vec(digest, values);
 
-//     let mut merk = Merk::open("./merk.db").unwrap();
-//     let batch_size = 20;
-//     // let batch = make_batch_seq(0..batch_size);
-// //     let batch = [
-// //     (b"key", Op::Put(b"value")),
-// //     (b"key2", Op::Put(b"value2")),
-// //     (b"key3", Op::Put(b"value3")),
-// //     (b"key4", Op::Delete)
-// // ];
-// let batch = &[
-//          (vec![1, 2, 3], Op::Put(vec![4, 5, 6])), // puts value [4,5,6] to key [1,2,3]
-//          (vec![4, 5, 6], Op::Delete) // deletes key [4,5,6]
-//      ];
-// merk.apply(&batch).expect("apply failed");
-//    let key = secretbox::gen_key();
-// let nonce = secretbox::gen_nonce();
-// let plaintext = b"some data";
-// let ciphertext = secretbox::seal(plaintext, &nonce, &key);
-// let their_plaintext = secretbox::open(&ciphertext, &nonce, &key).unwrap();
-// assert!(plaintext == &their_plaintext[..]);
+    assert_eq!(tree.count(), count, "ok");
 
+    
 
     println!("Starting filtering service..");
     let prometheus = PrometheusMetrics::new();
